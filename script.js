@@ -13,15 +13,27 @@ document.addEventListener("DOMContentLoaded", function () {
         const grade = yaForm.elements["grade"].value;
         const date = yaForm.elements["date"].value;
 
-        // 기본 유효성 검사
-        if (name === "" || grade === "" || date === "") {
-            displayApplicationMessage("모든 필드를 작성해 주세요.", "error");
+        // 현재 날짜와 시간을 가져옵니다
+        const now = new Date();
+        const currentDate = now.toISOString().split('T')[0];
+        const currentTime = now.getHours();
+
+        // 당일 12시 기준을 설정합니다
+        const deadlineTime = 12;
+
+        // 신청 날짜와 시간을 검사합니다
+        if (new Date(date) < new Date(currentDate)) {
+            displayApplicationMessage("미래 날짜를 선택해 주세요.", "error");
+            return;
+        }
+        if (date === currentDate && currentTime >= deadlineTime) {
+            displayApplicationMessage("신청은 당일 12시까지 가능합니다.", "error");
             return;
         }
 
-        // 미래 날짜 유효성 검사
-        if (new Date(date) < new Date()) {
-            displayApplicationMessage("미래 날짜를 선택해 주세요.", "error");
+        // 기본 유효성 검사
+        if (name === "" || grade === "" || date === "") {
+            displayApplicationMessage("모든 필드를 작성해 주세요.", "error");
             return;
         }
 
