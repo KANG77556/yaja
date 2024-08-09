@@ -1,7 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("loginForm");
+    const loginMessageDiv = document.getElementById("loginMessage");
+    const applicationSection = document.getElementById("applicationSection");
     const form = document.getElementById("yaForm");
     const messageDiv = document.getElementById("message");
+    const applicationList = document.getElementById("applicationList");
 
+    // 간단한 관리자 계정 설정
+    const admin = {
+        username: "admin",
+        password: "password123"
+    };
+
+    // 야자 신청 명단을 저장할 배열
+    const applications = [];
+
+    // 로그인 폼 이벤트 리스너
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const username = loginForm.elements["username"].value.trim();
+        const password = loginForm.elements["password"].value.trim();
+
+        if (username === admin.username && password === admin.password) {
+            displayLoginMessage("로그인 성공!", "success");
+            loginForm.reset();
+            applicationSection.style.display = "block"; // 신청 섹션 표시
+        } else {
+            displayLoginMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
+        }
+    });
+
+    // 신청 폼 이벤트 리스너
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -21,12 +51,32 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // 신청을 배열에 저장
+        const application = {
+            name: name,
+            grade: grade,
+            date: date
+        };
+        applications.push(application);
+
         // 신청 성공 메시지
         displayMessage("야자 신청이 완료되었습니다!", "success");
 
         // 폼 초기화
         form.reset();
+
+        // 신청 명단 업데이트
+        updateApplicationList();
     });
+
+    function displayLoginMessage(msg, type) {
+        loginMessageDiv.textContent = msg;
+        loginMessageDiv.className = type;
+        setTimeout(() => {
+            loginMessageDiv.textContent = "";
+            loginMessageDiv.className = "";
+        }, 3000);
+    }
 
     function displayMessage(msg, type) {
         messageDiv.textContent = msg;
@@ -35,5 +85,17 @@ document.addEventListener("DOMContentLoaded", function () {
             messageDiv.textContent = "";
             messageDiv.className = "";
         }, 3000);
+    }
+
+    function updateApplicationList() {
+        // 명단을 비웁니다
+        applicationList.innerHTML = "";
+
+        // 배열을 순회하며 목록을 생성합니다
+        applications.forEach((application, index) => {
+            const li = document.createElement("li");
+            li.textContent = `${index + 1}. ${application.name} - ${application.grade}학년 - ${application.date}`;
+            applicationList.appendChild(li);
+        });
     }
 });

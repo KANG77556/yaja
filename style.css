@@ -17,9 +17,10 @@ body {
     width: 300px;
 }
 
-h1 {
+h1, h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .form-group {
@@ -32,6 +33,7 @@ label {
 }
 
 input[type="text"],
+input[type="password"],
 input[type="date"],
 select {
     width: 100%;
@@ -56,7 +58,7 @@ button:hover {
     background-color: #45a049;
 }
 
-#message {
+#message, #loginMessage {
     margin-top: 20px;
     text-align: center;
     font-size: 16px;
@@ -68,4 +70,18 @@ button:hover {
 
 .error {
     color: red;
+}
+
+#applicationList {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    text-align: left;
+}
+
+#applicationList li {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #e7f5e6;
+    border-radius: 4px;
 }
