@@ -41,15 +41,48 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateApplicationList() {
-        // 명단을 비웁니다
         applicationList.innerHTML = "";
-
-        // 배열을 순회하며 목록을 생성합니다
         applications.forEach((application, index) => {
             const li = document.createElement("li");
             li.textContent = `${index + 1}. ${application.name} - ${application.grade}학년 - ${application.date}`;
+            
+            // 수정 버튼 추가
+            const editButton = document.createElement("button");
+            editButton.textContent = "수정";
+            editButton.className = "editButton";
+            editButton.addEventListener("click", () => editApplication(index));
+            
+            // 삭제 버튼 추가
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "삭제";
+            deleteButton.className = "deleteButton";
+            deleteButton.addEventListener("click", () => deleteApplication(index));
+            
+            li.appendChild(editButton);
+            li.appendChild(deleteButton);
             applicationList.appendChild(li);
         });
+    }
+
+    function editApplication(index) {
+        const application = applications[index];
+        const newName = prompt("새 이름:", application.name);
+        const newGrade = prompt("새 학년:", application.grade);
+        const newDate = prompt("새 날짜 (YYYY-MM-DD):", application.date);
+
+        if (newName && newGrade && newDate) {
+            applications[index] = { name: newName, grade: newGrade, date: newDate };
+            localStorage.setItem("applications", JSON.stringify(applications));
+            updateApplicationList();
+        }
+    }
+
+    function deleteApplication(index) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+            applications.splice(index, 1);
+            localStorage.setItem("applications", JSON.stringify(applications));
+            updateApplicationList();
+        }
     }
 
     // 엑셀로 내보내기 버튼 클릭 이벤트 리스너
