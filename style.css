@@ -60,3 +60,17 @@ button:hover {
 
 #applicationMessage, #adminMessage {
     margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+#applicationMessage.error, #adminMessage.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#applicationMessage.success, #adminMessage.success {
+    background-color: #d4edda;
+    color: #155724;
+}
