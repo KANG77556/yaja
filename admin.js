@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const adminContent = document.getElementById("adminContent");
     const applicationList = document.getElementById("applicationList");
     const exportButton = document.getElementById("exportButton");
+    const dateFilter = document.getElementById("dateFilter");
 
     // 간단한 관리자 계정 설정
     const admin = {
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
             displayAdminMessage("로그인 성공!", "success");
             adminLoginForm.reset();
             adminContent.style.display = "block";
-            updateApplicationList();
+            updateApplicationList(); // 초기 목록 표시
         } else {
             displayAdminMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
         }
@@ -44,8 +45,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // 신청 목록을 최신 순서로 정렬
         applications.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+        // 날짜 필터가 설정된 경우 해당 날짜로 필터링
+        const selectedDate = dateFilter.value;
+        const filteredApplications = selectedDate ? 
+            applications.filter(app => app.date === selectedDate) : 
+            applications;
+
+        // 신청 목록 표시
         applicationList.innerHTML = "";
-        applications.forEach((application, index) => {
+        filteredApplications.forEach((application, index) => {
             const li = document.createElement("li");
             li.textContent = `${index + 1}. ${application.name} - ${application.grade}학년 - ${application.date}`;
             
@@ -66,6 +74,11 @@ document.addEventListener("DOMContentLoaded", function () {
             applicationList.appendChild(li);
         });
     }
+
+    // 날짜 필터 변경 시 목록 업데이트
+    dateFilter.addEventListener("change", function () {
+        updateApplicationList();
+    });
 
     function editApplication(index) {
         const application = applications[index];
