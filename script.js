@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.getElementById("loginForm");
-    const loginMessageDiv = document.getElementById("loginMessage");
-    const loginPage = document.getElementById("loginPage");
-    const applicationPage = document.getElementById("applicationPage");
-    const form = document.getElementById("yaForm");
-    const messageDiv = document.getElementById("message");
+    const yaForm = document.getElementById("yaForm");
+    const applicationMessageDiv = document.getElementById("applicationMessage");
+    const adminLoginButton = document.getElementById("adminLoginButton");
+    const adminLoginForm = document.getElementById("adminLoginForm");
+    const adminMessageDiv = document.getElementById("adminMessage");
     const applicationList = document.getElementById("applicationList");
 
     // 간단한 관리자 계정 설정
@@ -16,39 +15,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // 야자 신청 명단을 저장할 배열
     const applications = [];
 
-    // 로그인 폼 이벤트 리스너
-    loginForm.addEventListener("submit", function (event) {
+    // 야자 신청 폼 이벤트 리스너
+    yaForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const username = loginForm.elements["username"].value.trim();
-        const password = loginForm.elements["password"].value.trim();
-
-        if (username === admin.username && password === admin.password) {
-            displayLoginMessage("로그인 성공!", "success");
-            loginPage.style.display = "none"; // 로그인 페이지 숨기기
-            applicationPage.style.display = "block"; // 신청 페이지 표시
-        } else {
-            displayLoginMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
-        }
-    });
-
-    // 신청 폼 이벤트 리스너
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const name = form.elements["name"].value.trim();
-        const grade = form.elements["grade"].value;
-        const date = form.elements["date"].value;
+        const name = yaForm.elements["name"].value.trim();
+        const grade = yaForm.elements["grade"].value;
+        const date = yaForm.elements["date"].value;
 
         // 기본 유효성 검사
         if (name === "" || grade === "" || date === "") {
-            displayMessage("모든 필드를 작성해 주세요.", "error");
+            displayApplicationMessage("모든 필드를 작성해 주세요.", "error");
             return;
         }
 
         // 미래 날짜 유효성 검사
         if (new Date(date) < new Date()) {
-            displayMessage("미래 날짜를 선택해 주세요.", "error");
+            displayApplicationMessage("미래 날짜를 선택해 주세요.", "error");
             return;
         }
 
@@ -61,30 +44,49 @@ document.addEventListener("DOMContentLoaded", function () {
         applications.push(application);
 
         // 신청 성공 메시지
-        displayMessage("야자 신청이 완료되었습니다!", "success");
+        displayApplicationMessage("야자 신청이 완료되었습니다!", "success");
 
         // 폼 초기화
-        form.reset();
-
-        // 신청 명단 업데이트
-        updateApplicationList();
+        yaForm.reset();
     });
 
-    function displayLoginMessage(msg, type) {
-        loginMessageDiv.textContent = msg;
-        loginMessageDiv.className = type;
+    // 관리자 로그인 버튼 클릭 이벤트
+    adminLoginButton.addEventListener("click", function () {
+        document.getElementById("applicationPage").style.display = "none";
+        document.getElementById("adminPage").style.display = "block";
+    });
+
+    // 관리자 로그인 폼 이벤트 리스너
+    adminLoginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const username = adminLoginForm.elements["username"].value.trim();
+        const password = adminLoginForm.elements["password"].value.trim();
+
+        if (username === admin.username && password === admin.password) {
+            displayAdminMessage("로그인 성공!", "success");
+            adminLoginForm.reset();
+            updateApplicationList();
+        } else {
+            displayAdminMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
+        }
+    });
+
+    function displayApplicationMessage(msg, type) {
+        applicationMessageDiv.textContent = msg;
+        applicationMessageDiv.className = type;
         setTimeout(() => {
-            loginMessageDiv.textContent = "";
-            loginMessageDiv.className = "";
+            applicationMessageDiv.textContent = "";
+            applicationMessageDiv.className = "";
         }, 3000);
     }
 
-    function displayMessage(msg, type) {
-        messageDiv.textContent = msg;
-        messageDiv.className = type;
+    function displayAdminMessage(msg, type) {
+        adminMessageDiv.textContent = msg;
+        adminMessageDiv.className = type;
         setTimeout(() => {
-            messageDiv.textContent = "";
-            messageDiv.className = "";
+            adminMessageDiv.textContent = "";
+            adminMessageDiv.className = "";
         }, 3000);
     }
 
