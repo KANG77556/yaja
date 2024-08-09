@@ -3,58 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>야자 신청 프로그램</title>
+    <title>야자 신청</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- 야자 신청 페이지 -->
-        <div id="applicationPage">
-            <h1>야자 신청</h1>
-            <form id="yaForm">
-                <div class="form-group">
-                    <label for="name">이름:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="grade">학년:</label>
-                    <select id="grade" name="grade" required>
-                        <option value="">선택하세요</option>
-                        <option value="1">1학년</option>
-                        <option value="2">2학년</option>
-                        <option value="3">3학년</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="date">신청 날짜:</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-                <button type="submit">신청하기</button>
-            </form>
-            <div id="applicationMessage"></div>
-            <button id="adminLoginButton">관리자 로그인</button>
-        </div>
-
-        <!-- 관리자 페이지 -->
-        <div id="adminPage" style="display:none;">
-            <h1>관리자 로그인</h1>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="adminUsername">사용자 이름:</label>
-                    <input type="text" id="adminUsername" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">비밀번호:</label>
-                    <input type="password" id="adminPassword" name="password" required>
-                </div>
-                <button type="submit">로그인</button>
-            </form>
-            <div id="adminMessage"></div>
-            
-            <!-- 신청 명단 -->
-            <h2>야자 신청 명단</h2>
-            <ul id="applicationList"></ul>
-        </div>
+        <h1>야자 신청</h1>
+        <form id="yaForm">
+            <div class="form-group">
+                <label for="name">이름:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="grade">학년:</label>
+                <select id="grade" name="grade" required>
+                    <option value="">선택하세요</option>
+                    <option value="1">1학년</option>
+                    <option value="2">2학년</option>
+                    <option value="3">3학년</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">신청 날짜:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <button type="submit">신청하기</button>
+        </form>
+        <div id="applicationMessage"></div>
+        <p><a href="admin.html">관리자 페이지로 이동</a></p>
     </div>
     <script src="script.js"></script>
 </body>
