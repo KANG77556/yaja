@@ -18,13 +18,17 @@ button:hover {
 
 /* 수정 및 삭제 버튼 스타일 추가 */
 .editButton, .deleteButton {
-    width: 75.6px; /* 2cm 대략 75.6px */
-    height: 75.6px; /* 2cm 대략 75.6px */
-    font-size: 14px; /* 버튼 텍스트 크기 조정 */
+    width: 25px; /* 버튼의 너비를 25px로 설정 */
+    height: 25px; /* 버튼의 높이를 25px로 설정 */
+    font-size: 12px; /* 버튼 텍스트 크기 조정 */
     padding: 0; /* 패딩 제거 */
     margin: 5px; /* 버튼 간격 조정 */
-    line-height: 75.6px; /* 텍스트 수직 중앙 정렬 */
+    line-height: 25px; /* 텍스트 수직 중앙 정렬 */
     text-align: center; /* 텍스트 수평 중앙 정렬 */
+    border-radius: 50%; /* 원형 버튼으로 만들기 */
+    display: inline-flex; /* 버튼을 인라인 플렉스 컨테이너로 만들기 */
+    align-items: center; /* 텍스트 수직 중앙 정렬 */
+    justify-content: center; /* 텍스트 수평 중앙 정렬 */
 }
 
 .editButton {
