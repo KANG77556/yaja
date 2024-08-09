@@ -1,87 +1,104 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const yaForm = document.getElementById("yaForm");
+    const applicationMessageDiv = document.getElementById("applicationMessage");
+    const adminLoginButton = document.getElementById("adminLoginButton");
+    const adminLoginForm = document.getElementById("adminLoginForm");
+    const adminMessageDiv = document.getElementById("adminMessage");
+    const applicationList = document.getElementById("applicationList");
 
-.container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
+    // 간단한 관리자 계정 설정
+    const admin = {
+        username: "밀성제일고",
+        password: "5204"
+    };
 
-h1, h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-}
+    // 야자 신청 명단을 저장할 배열
+    const applications = [];
 
-.form-group {
-    margin-bottom: 15px;
-}
+    // 야자 신청 폼 이벤트 리스너
+    yaForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
+        const name = yaForm.elements["name"].value.trim();
+        const grade = yaForm.elements["grade"].value;
+        const date = yaForm.elements["date"].value;
 
-input[type="text"],
-input[type="password"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        // 기본 유효성 검사
+        if (name === "" || grade === "" || date === "") {
+            displayApplicationMessage("모든 필드를 작성해 주세요.", "error");
+            return;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+        // 미래 날짜 유효성 검사
+        if (new Date(date) < new Date()) {
+            displayApplicationMessage("미래 날짜를 선택해 주세요.", "error");
+            return;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
+        // 신청을 배열에 저장
+        const application = {
+            name: name,
+            grade: grade,
+            date: date
+        };
+        applications.push(application);
 
-#applicationMessage, #adminMessage {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 16px;
-}
+        // 신청 성공 메시지
+        displayApplicationMessage("야자 신청이 완료되었습니다!", "success");
 
-.success {
-    color: green;
-}
+        // 폼 초기화
+        yaForm.reset();
+    });
 
-.error {
-    color: red;
-}
+    // 관리자 로그인 버튼 클릭 이벤트
+    adminLoginButton.addEventListener("click", function () {
+        document.getElementById("applicationPage").style.display = "none";
+        document.getElementById("adminPage").style.display = "block";
+    });
 
-#applicationList {
-    list-style-type: none;
-    padding: 0;
-    margin: 20px 0 0 0;
-    text-align: left;
-}
+    // 관리자 로그인 폼 이벤트 리스너
+    adminLoginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-#applicationList li {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #e7f5e6;
-    border-radius: 4px;
-}
+        const username = adminLoginForm.elements["username"].value.trim();
+        const password = adminLoginForm.elements["password"].value.trim();
+
+        if (username === admin.username && password === admin.password) {
+            displayAdminMessage("로그인 성공!", "success");
+            adminLoginForm.reset();
+            updateApplicationList();
+        } else {
+            displayAdminMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
+        }
+    });
+
+    function displayApplicationMessage(msg, type) {
+        applicationMessageDiv.textContent = msg;
+        applicationMessageDiv.className = type;
+        setTimeout(() => {
+            applicationMessageDiv.textContent = "";
+            applicationMessageDiv.className = "";
+        }, 3000);
+    }
+
+    function displayAdminMessage(msg, type) {
+        adminMessageDiv.textContent = msg;
+        adminMessageDiv.className = type;
+        setTimeout(() => {
+            adminMessageDiv.textContent = "";
+            adminMessageDiv.className = "";
+        }, 3000);
+    }
+
+    function updateApplicationList() {
+        // 명단을 비웁니다
+        applicationList.innerHTML = "";
+
+        // 배열을 순회하며 목록을 생성합니다
+        applications.forEach((application, index) => {
+            const li = document.createElement("li");
+            li.textContent = `${index + 1}. ${application.name} - ${application.grade}학년 - ${application.date}`;
+            applicationList.appendChild(li);
+        });
+    }
+});
