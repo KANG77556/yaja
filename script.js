@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("loginForm");
     const loginMessageDiv = document.getElementById("loginMessage");
-    const applicationSection = document.getElementById("applicationSection");
+    const loginPage = document.getElementById("loginPage");
+    const applicationPage = document.getElementById("applicationPage");
     const form = document.getElementById("yaForm");
     const messageDiv = document.getElementById("message");
     const applicationList = document.getElementById("applicationList");
 
     // 간단한 관리자 계정 설정
     const admin = {
-        username: "admin",
-        password: "password123"
+        username: "밀성제일고",
+        password: "5204"
     };
 
     // 야자 신청 명단을 저장할 배열
@@ -24,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (username === admin.username && password === admin.password) {
             displayLoginMessage("로그인 성공!", "success");
-            loginForm.reset();
-            applicationSection.style.display = "block"; // 신청 섹션 표시
+            loginPage.style.display = "none"; // 로그인 페이지 숨기기
+            applicationPage.style.display = "block"; // 신청 페이지 표시
         } else {
             displayLoginMessage("잘못된 사용자 이름 또는 비밀번호입니다.", "error");
         }
