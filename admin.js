@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateApplicationList() {
+        // 신청 목록을 최신 순서로 정렬
+        applications.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         applicationList.innerHTML = "";
         applications.forEach((application, index) => {
             const li = document.createElement("li");
