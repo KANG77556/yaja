@@ -7,33 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Page</title>
-    <style>
-        /* 여기에 CSS 스타일을 추가할 수 있습니다 */
-    </style>
-</head>
-<body>
     <header>
-        <h1>Welcome to My Web Page</h1>
+        <h1>야자 신청 페이지</h1>
     </header>
 
     <main>
-        <h2>Application Form</h2>
+        <h2>Google Forms 신청</h2>
         <!-- Google Forms 임베드 코드 삽입 위치 -->
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe3dAIFCGPzLxGPnKLTN5MFVIMQ-MF4CFhsoeqrw09plLQ2mA/viewform?usp=sf_link" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </main>
 
-    <footer>
-        <p>&copy; 2024 My Website</p>
-    </footer>
-
-    <div class="container">
-        <h1>야자 신청</h1>
+        <h2>자체 신청 폼</h2>
         <form id="yaForm">
             <div class="form-group">
                 <label for="name">이름:</label>
@@ -56,7 +39,12 @@
         </form>
         <div id="applicationMessage"></div>
         <p><a href="admin.html">관리자 페이지로 이동</a></p>
-    </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Website</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
