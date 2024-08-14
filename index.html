@@ -38,11 +38,16 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="date">신청 날짜:</label>
-                <input type="date" id="dateInput" name="date">
-                <button type="button" id="addDateButton">날짜 추가</button>
+                <label for="dates">신청 날짜:</label>
+                <select id="dates" name="dates" multiple required>
+                    <!-- 날짜 옵션 추가 -->
+                    <option value="2024-08-01">2024-08-01</option>
+                    <option value="2024-08-02">2024-08-02</option>
+                    <option value="2024-08-03">2024-08-03</option>
+                    <option value="2024-08-04">2024-08-04</option>
+                    <!-- 필요한 만큼 날짜 추가 가능 -->
+                </select>
             </div>
-            <div id="dateList"></div>
             <button type="submit">신청하기</button>
         </form>
         <div id="applicationMessage"></div>
