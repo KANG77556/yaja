@@ -5,7 +5,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
     const adminPassword = document.getElementById('adminPassword').value;
     const loginMessage = document.getElementById('loginMessage');
 
-    // 관리자 로그인 정보 확인
+    // 관리자 로그인 정보 확인 (아이디와 비밀번호 하드코딩)
     if (adminId === '밀성제일고' && adminPassword === '5204') {
         loginMessage.textContent = '로그인 성공!';
         document.getElementById('loginSection').style.display = 'none';
@@ -26,7 +26,6 @@ function loadApplicants() {
     const applicants = JSON.parse(localStorage.getItem('applicants')) || [];
 
     applicants.forEach(function(applicant) {
-        // 모든 신청자 명단을 추가
         addApplicantRow(applicant);
     });
 }
