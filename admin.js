@@ -1,33 +1,60 @@
-// Mock data: In reality, this data would be fetched from a server/database.
-const applicantsData = [
-    { name: '홍길동', grade: '1학년', date: '2024-08-10' },
-    { name: '김영희', grade: '2학년', date: '2024-08-11' },
-    { name: '이철수', grade: '3학년', date: '2024-08-10' },
-    { name: '박수진', grade: '2학년', date: '2024-08-12' },
-];
+document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
 
-document.getElementById('adminForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting the traditional way
+    const adminId = document.getElementById('adminId').value;
+    const adminPassword = document.getElementById('adminPassword').value;
+    const loginMessage = document.getElementById('loginMessage');
 
-    const selectedDate = document.getElementById('viewDate').value;
-    const applicantList = document.getElementById('applicantList');
+    // 관리자 로그인 정보 확인
+    if (adminId === '밀성제일고' && adminPassword === '5204') {
+        loginMessage.textContent = '로그인 성공!';
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('applicantsSection').style.display = 'block';
 
-    // Clear any previous data
-    applicantList.innerHTML = '';
-
-    // Filter the applicants by the selected date
-    const filteredApplicants = applicantsData.filter(applicant => applicant.date === selectedDate);
-
-    // Display the filtered applicants
-    if (filteredApplicants.length > 0) {
-        const list = document.createElement('ul');
-        filteredApplicants.forEach(applicant => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `이름: ${applicant.name}, 학년: ${applicant.grade}`;
-            list.appendChild(listItem);
-        });
-        applicantList.appendChild(list);
+        // 전체 신청자 불러오기
+        loadApplicants();
     } else {
-        applicantList.textContent = '선택한 날짜에 신청자가 없습니다.';
+        loginMessage.textContent = '아이디 또는 비밀번호가 잘못되었습니다.';
     }
+});
+
+function loadApplicants() {
+    const applicantsList = document.getElementById('applicantsList');
+    applicantsList.innerHTML = ''; // 명단 초기화
+
+    // localStorage에서 신청자 정보 가져오기
+    const applicants = JSON.parse(localStorage.getItem('applicants')) || [];
+
+    applicants.forEach(function(applicant) {
+        // 모든 신청자 명단을 추가
+        addApplicantRow(applicant);
+    });
+}
+
+function addApplicantRow(applicant) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${applicant.name}</td>
+        <td>${applicant.grade}</td>
+        <td>${applicant.dates.join(', ')}</td>
+        <td>${applicant.location}</td>
+    `;
+    document.getElementById('applicantsList').appendChild(row);
+}
+
+// 날짜 필터링
+document.getElementById('filterButton').addEventListener('click', function() {
+    const filterDate = document.getElementById('filterDate').value;
+    const applicantsList = document.getElementById('applicantsList');
+    applicantsList.innerHTML = ''; // 기존 명단 초기화
+
+    // localStorage에서 신청자 정보 가져오기
+    const applicants = JSON.parse(localStorage.getItem('applicants')) || [];
+
+    applicants.forEach(function(applicant) {
+        // 신청자의 모든 날짜 중에서 선택한 날짜가 있는지 확인
+        if (applicant.dates.includes(filterDate)) {
+            addApplicantRow(applicant);
+        }
+    });
 });
