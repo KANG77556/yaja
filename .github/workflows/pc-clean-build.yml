@@ -1,0 +1,53 @@
+name: PC Clean Windows Build
+
+on:
+  push:
+    branches:
+      - build/pc-clean-v1-20260821
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    if: github.head_ref == 'build/pc-clean-v1-20260821' || github.ref_name == 'build/pc-clean-v1-20260821'
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expand PC Clean source
+        run: |
+          New-Item -ItemType Directory -Force -Path buildsrc | Out-Null
+          Expand-Archive -Path pc-clean-buildsrc.zip -DestinationPath buildsrc -Force
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        working-directory: buildsrc
+        run: dotnet restore PCClean.sln
+      - name: Test
+        working-directory: buildsrc
+        run: dotnet test PCClean.sln -c Release --no-restore --nologo
+      - name: Publish Windows x64
+        working-directory: buildsrc
+        run: dotnet publish src/PCClean/PCClean.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -o ../release
+      - name: Verify executable
+        run: |
+          if (-not (Test-Path release/PCClean.exe)) { throw 'PCClean.exe not produced' }
+          $hash = Get-FileHash release/PCClean.exe -Algorithm SHA256
+          $file = Get-Item release/PCClean.exe
+          "SHA256=$($hash.Hash)" | Set-Content release/verification.txt
+          "SIZE=$($file.Length)" | Add-Content release/verification.txt
+          Get-Content release/verification.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PCClean-Windows-x64
+          path: |
+            release/PCClean.exe
+            release/verification.txt
+          if-no-files-found: error
